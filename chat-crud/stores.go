@@ -251,6 +251,29 @@ func (s *RoomStore) GetUserRooms(userID int) []Room {
 	return rooms
 }
 
+func (s *RoomStore) GetMembers(roomID int) []int {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	room, ok := s.rooms[roomID]
+	if !ok {
+		return nil
+	}
+	return room.Members
+}
+
+func (s *MessageStore) GetSince(roomID int, since time.Time) []Message {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+
+	results := make([]Message, 0)
+	for _, msg := range s.messages {
+		if msg.RoomID == roomID && msg.CreatedAt.After(since) {
+			results = append(results, msg)
+		}
+	}
+	return results
+}
+
 func (s *RoomStore) AddMember(roomID, userID int) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()

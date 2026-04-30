@@ -53,6 +53,20 @@ func main() {
 	http.HandleFunc("/typing", authMiddleware(handleTyping))
 	http.HandleFunc("/attachment", authMiddleware(handleUploadAttachment))
 
+	http.HandleFunc("/users/search", authMiddleware(handleSearchUsersByName))
+	http.HandleFunc("/avatar/url", authMiddleware(handleSetAvatarFromURL))
+	http.HandleFunc("/room/invite-bulk", authMiddleware(handleBulkInvite))
+	http.HandleFunc("/room/invite-code", authMiddleware(handleInviteCode))
+	http.HandleFunc("/room/stats", authMiddleware(handleRoomStats))
+	http.HandleFunc("/messages/recent", authMiddleware(handleRecentMessages))
+	http.HandleFunc("/redirect", handleRedirect)
+
+	http.HandleFunc("/admin/login", handleAdminLogin)
+	http.HandleFunc("/admin/user", handleAdminUpdateUser)
+	http.HandleFunc("/admin/log", handleAdminViewLog)
+	http.HandleFunc("/admin/broadcast", handleAdminBroadcast)
+	http.HandleFunc("/admin/backup", handleAdminBackup)
+
 	fmt.Println("Server starting on :8080...")
 	http.ListenAndServe(":8080", nil)
 }
