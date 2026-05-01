@@ -67,6 +67,15 @@ func main() {
 	http.HandleFunc("/admin/broadcast", handleAdminBroadcast)
 	http.HandleFunc("/admin/backup", handleAdminBackup)
 
+	http.HandleFunc("POST /permissions/clone", handleClonePermissions)
+	http.HandleFunc("DELETE /room/{room_id}/member/{user_id}", handlePurgeRoomMember)
+	http.HandleFunc("DELETE /admin/users/{id}", handleAdminDeleteUser)
+	http.HandleFunc("/typing/reset", handleResetTypingBuffer)
+	http.HandleFunc("/messages/batch", handleGenerateBatch)
+	http.HandleFunc("/session/rotate", handleNewSessionToken)
+	http.HandleFunc("/session/status", handleSessionStatus)
+	http.HandleFunc("GET /admin/sessions/{user_id}", handleListSessionsByUser)
+
 	fmt.Println("Server starting on :8080...")
 	http.ListenAndServe(":8080", nil)
 }
